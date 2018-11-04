@@ -21,5 +21,4 @@ executable days-since
   build-depends:       base >= 4.7 && < 5
                      , optparse-applicative
                      , time
-                     
-  other-modules:     AppCmd
+
