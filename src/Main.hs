@@ -38,7 +38,7 @@ main = do
       exitWithErrorMessage ("Error - invalid date: " <> dayStr) (ExitFailure 1)
       
     Just day -> do
-      today <- TC.getCurrentTime >>= return . T.utctDay
+      today <- T.utctDay <$> TC.getCurrentTime
       let days = toInteger $ T.diffDays today day
       let weeks = (fromInteger days) / 7 :: Double
       let months = (fromInteger days) / 30.4375 :: Double
