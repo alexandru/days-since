@@ -11,7 +11,7 @@ Weeks:  16.4
 Months:  3.8
 ```
 
-## How to Build
+## How to Build and Install
 
 Install [Stack](https://docs.haskellstack.org/). You can do so via:
 
@@ -22,13 +22,13 @@ curl -sSL https://get.haskellstack.org/ | sh
 Then in the project's directory:
 
 ```
-stack build
+stack install
 ```
 
 This will output an executable in a directory like:
 
 ```
-.stack-work/install/x86_64-osx/lts-12.16/8.4.4/bin
+$HOME/.local/bin
 ```
 
-Copy that somewhere in your path.
+This should be on your path.
