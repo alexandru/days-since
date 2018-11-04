@@ -13,7 +13,14 @@ Months:  3.8
 
 ## How to Build and Install
 
-Install [Stack](https://docs.haskellstack.org/). You can do so via:
+Install [Stack](https://docs.haskellstack.org/). You can do so on
+MacOS via Homebrew:
+
+```
+brew install stack
+```
+
+Or for other platforms:
 
 ```
 curl -sSL https://get.haskellstack.org/ | sh
