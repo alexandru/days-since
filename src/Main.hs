@@ -42,8 +42,10 @@ main = do
       let days = toInteger $ T.diffDays today day
       let weeks = (fromInteger days) / 7 :: Double
       let months = (fromInteger days) / 30.4375 :: Double
+      let years = (fromInteger days) / 365.242199 :: Double
       putStrLn ""
-      putStrLn $ "Days:  " <> (printf "%5d" days)
-      putStrLn $ "Weeks: " <> (printf "%5.1f" weeks)
-      putStrLn $ "Months:" <> (printf "%5.1f" months)
+      putStrLn $ "Days:   " <> (printf "%6d" days)
+      putStrLn $ "Weeks:  " <> (printf "%6.1f" weeks)
+      putStrLn $ "Months: " <> (printf "%6.1f" months)
+      putStrLn $ "Years:  " <> (printf "%6.1f" years)
       putStrLn ""
