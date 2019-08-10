@@ -11,7 +11,10 @@ import qualified Data.Time.Clock as TC
 import qualified Data.Time.Format as TF
 
 exitWithErrorMessage :: String -> ExitCode -> IO a
-exitWithErrorMessage message e = hPutStrLn stderr message >> exitWith e
+exitWithErrorMessage message e =
+  do
+    hPutStrLn stderr message
+    exitWith e
 
 -- |Models command line arguments
 newtype AppArgs =
