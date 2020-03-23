@@ -17,42 +17,57 @@ exitWithErrorMessage message e =
     exitWith e
 
 -- |Models command line arguments
-newtype AppArgs =
+data AppArgs =
   AppArgs
-    { date :: String
+    { startDate :: String,
+      endDate :: Maybe String
     }
   deriving (Show)
 
 getCmdLineArgs :: IO AppArgs
 getCmdLineArgs = execParser opts
   where
-    appArgsParser =
-      AppArgs <$> argument str (metavar "DATE" <> help "YYYY-MM-DD format")
+    appArgsParser = AppArgs
+      <$> argument str (
+        metavar "START_DATE"
+        <> help "Start date, YYYY-MM-DD format"
+      )
+      <*> optional (
+        strOption (
+          metavar "END_DATE"
+          <> short 'e'
+          <> long "end-date"
+          <> help "Optional end date, YYYY-MM-DD format"
+        )
+      )
+
     opts =
       info
         (appArgsParser <**> helper)
-        (fullDesc <>
-         progDesc "Calculates how many days have passed since a certain date")
+        (fullDesc
+          <> progDesc "Calculates how many days have passed since a certain date")
 
 main :: IO ()
 main = do
   args <- getCmdLineArgs
-  let dayStr = date args
-  let parsedDay = TF.parseTimeM True TF.defaultTimeLocale "%Y-%-m-%-d" dayStr :: Maybe T.Day
+  let startDateStr = startDate args
+  let parsedStartDT = TF.parseTimeM True TF.defaultTimeLocale "%Y-%-m-%-d %-z" startDateStr :: Maybe T.UTCTime
 
-  case parsedDay of
-    Nothing ->
-      exitWithErrorMessage ("Error - invalid date: " <> dayStr) (ExitFailure 1)
-    Just day -> do
-      today <- T.utctDay <$> TC.getCurrentTime
-      let days = toInteger $ T.diffDays today day
-      let weeks = fromInteger days / 7 :: Double
-      let months = fromInteger days / 30.4375 :: Double
-      let years = fromInteger days / 365.242199 :: Double
+  putStrLn (show parsedStartDT)
+  -- case parsedStartDT of
+  --   Nothing ->
+  --     exitWithErrorMessage ("Error - invalid date: " <> startDateStr) (ExitFailure 1)
+  --   Just startDT -> do
+  --     now <- TC.getCurrentTime
+  --     let diff = T.diffUTCTime now startDT
+  --     let days = T.nominalDiffTimeToSeconds $ T.diffUTCTime now startDT
+  --     let weeks = fromInteger days / 7 :: Double
+  --     let months = fromInteger days / 30.4375 :: Double
+  --     let years = fromInteger days / 365.242199 :: Double
 
-      putStrLn ""
-      putStrLn $ "Days:   " <> printf "%6d" days
-      putStrLn $ "Weeks:  " <> printf "%6.1f" weeks
-      putStrLn $ "Months: " <> printf "%6.1f" months
-      putStrLn $ "Years:  " <> printf "%6.1f" years
-      putStrLn ""
+  --     putStrLn ""
+  --     putStrLn $ "Days:   " <> printf "%6d" days
+  --     putStrLn $ "Weeks:  " <> printf "%6.1f" weeks
+  --     putStrLn $ "Months: " <> printf "%6.1f" months
+  --     putStrLn $ "Years:  " <> printf "%6.1f" years
+  --     putStrLn ""
